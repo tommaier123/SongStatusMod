@@ -47,7 +47,7 @@ public class SongStatusScript : ModScript, ISynthRidersEvents
     {
         //get file path
         var dataPath = Application.dataPath;
-        filePath = dataPath.Substring(0, dataPath.LastIndexOf('/')) + "/status/";
+        filePath = dataPath.Substring(0, dataPath.LastIndexOf('/')) + "/Mods/SongStatusMod/";
 
         //create directory
         (new FileInfo(filePath)).Directory.Create();
