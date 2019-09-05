@@ -33,12 +33,14 @@ public class SongStatusScript : ModScript, ISynthRidersEvents
     public override void OnModLoaded()
     {
         SceneManager.sceneLoaded += SceneManager_sceneLoaded;
+        log("SongStatusMod loaded");
     }
 
     public override void OnModUnload()
     {
         SceneManager.sceneLoaded -= SceneManager_sceneLoaded;
         ClearStatus();
+        log("SongStatusMod unloaded");
     }
 
     private void SceneManager_sceneLoaded(Scene arg0, LoadSceneMode arg1)
@@ -247,6 +249,19 @@ public class SongStatusScript : ModScript, ISynthRidersEvents
         mirrorNotes = "OFF";
         haloNotes = "OFF";
         noFailMode = "OFF";
+    }
+
+    public void log(string str)
+    {
+        //get file path
+        var dataPath = Application.dataPath;
+        var filePath = dataPath.Substring(0, dataPath.LastIndexOf('/')) + "/Novalog.txt";
+
+        //write
+        using (var streamWriter = new StreamWriter(filePath, true))
+        {
+            streamWriter.WriteLine(str);
+        }
     }
 }
 
