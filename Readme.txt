@@ -16,10 +16,10 @@ Commands:
 <mode>
 <noFailMode>
 <oneLife>
-<punchMode>
 <accuracy>
 <obstacles>
 <noteJumpdSpeed>
 <noteSize>
-<mirrorNotes>
+<colliderSize>
+<rainbowMode>
 <haloNotes>

@@ -20,14 +20,15 @@ public class SongStatusScript : ModScript, ISynthRidersEvents
 
     //modifiers
     private string accuracy = "NORMAL";
-    private string punchMode = "OFF";
+    private string rainbowMode = "OFF";
     private string noteJumpSpeed = "1x";
     private string oneLife = "OFF";
     private string obstacles = "ON";
     private string noteSize = "NORMAL";
-    private string mirrorNotes = "OFF";
+    private string colliderSize = "NORMAL";
     private string haloNotes = "OFF";
     private string noFailMode = "OFF";
+
 
 
     public override void OnModLoaded()
@@ -40,12 +41,15 @@ public class SongStatusScript : ModScript, ISynthRidersEvents
     {
         SceneManager.sceneLoaded -= SceneManager_sceneLoaded;
         ClearStatus();
+        ClearCover();
+
         log("SongStatusMod unloaded");
     }
 
     private void SceneManager_sceneLoaded(Scene arg0, LoadSceneMode arg1)
     {
         ClearStatus();
+        ClearCover();
     }
 
     public void OnRoomLoaded()
@@ -60,6 +64,17 @@ public class SongStatusScript : ModScript, ISynthRidersEvents
 
     public void OnGameStageLoaded(TrackData trackData)
     {
+        /*Accuracity - Hard
+          No fail mode - ON
+          Notes size - Small
+          Note jump speed - 1.25x
+          Obstacles - OFF
+          Halo Notes - On
+          Rainbow Mode - On
+          Collider Size - On
+          One Life - On*/
+
+
         //get information
         name = trackData.name;
         artist = trackData.artist;
@@ -82,22 +97,6 @@ public class SongStatusScript : ModScript, ISynthRidersEvents
             if (modifier.Contains("No fail mode"))
             {
                 noFailMode = "ON";
-            }
-            else if (modifier.Contains("Punch Mode"))
-            {
-                string temp = modifier.Substring(modifier.IndexOf("-") + 2);
-                if (temp.Equals("Normal"))
-                {
-                    punchMode = "NORMAL";
-                }
-                else if (temp.Equals("Hard"))
-                {
-                    punchMode = "HARD";
-                }
-                else if (temp.Equals("Intense"))
-                {
-                    punchMode = "INTENSE";
-                }
             }
             else if (modifier.Contains("One Life"))
             {
@@ -127,16 +126,23 @@ public class SongStatusScript : ModScript, ISynthRidersEvents
                     noteSize = "BIG";
                 }
             }
-            else if (modifier.Contains("Mirror Notes"))
-            {
-                mirrorNotes = "ON";
-            }
             else if (modifier.Contains("Halo Notes"))
             {
                 haloNotes = "ON";
             }
+            else if (modifier.Contains("Rainbow Mode"))
+            {
+                rainbowMode = "ON";
+            }
+            else if (modifier.Contains("Collider Size"))
+            {
+                colliderSize = "ON";
+            }
         }
+
         WriteSongStatus();
+        WriteCover(trackData.coverImage);
+
     }
 
     public void OnGameStageUnloaded()
@@ -177,6 +183,29 @@ public class SongStatusScript : ModScript, ISynthRidersEvents
 
     }
 
+    public void WriteCover(Texture2D tex)
+    {
+
+        var dataPath = Application.dataPath;
+        string filePath = dataPath.Substring(0, dataPath.LastIndexOf('/')) + "/Mods/SongStatusMod/";
+
+        Texture2D MyTex = new Texture2D(tex.width, tex.height);
+        MyTex.SetPixels32(tex.GetPixels32());
+        MyTex.Apply();
+
+        byte[] bytes = MyTex.EncodeToPNG();
+
+        File.WriteAllBytes(filePath + "cover.png", bytes);
+
+    }
+
+    public void ClearCover()
+    {
+        Texture2D tex = new Texture2D(0, 0, TextureFormat.RGB24, false);
+
+        WriteCover(tex);
+    }
+
     public void WriteSongStatus()
     {
         //get file path
@@ -201,12 +230,12 @@ public class SongStatusScript : ModScript, ISynthRidersEvents
 
         //modifiers
         text = text.Replace("<accuracy>", accuracy);
-        text = text.Replace("<punchMode>", punchMode);
+        text = text.Replace("<rainbowMode>", rainbowMode);
         text = text.Replace("<noteJumpdSpeed>", noteJumpSpeed);
         text = text.Replace("<oneLife>", oneLife);
         text = text.Replace("<obstacles>", obstacles);
         text = text.Replace("<noteSize>", noteSize);
-        text = text.Replace("<mirrorNotes>", mirrorNotes);
+        text = text.Replace("<colliderSize>", colliderSize);
         text = text.Replace("<haloNotes>", haloNotes);
         text = text.Replace("<noFailMode>", noFailMode);
 
@@ -241,12 +270,12 @@ public class SongStatusScript : ModScript, ISynthRidersEvents
 
         //modifiers
         accuracy = "NORMAL";
-        punchMode = "OFF";
+        rainbowMode = "OFF";
         noteJumpSpeed = "1x";
         oneLife = "OFF";
         obstacles = "ON";
         noteSize = "NORMAL";
-        mirrorNotes = "OFF";
+        colliderSize = "NORMAL";
         haloNotes = "OFF";
         noFailMode = "OFF";
     }
