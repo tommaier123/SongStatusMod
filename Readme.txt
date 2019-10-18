@@ -15,7 +15,7 @@ Commands:
 <misses>
 <mode>
 <noFailMode>
-<oneLife>
+<limitedEnergy>
 <accuracy>
 <obstacles>
 <noteJumpdSpeed>

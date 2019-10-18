@@ -22,7 +22,7 @@ public class SongStatusScript : ModScript, ISynthRidersEvents
     private string accuracy = "NORMAL";
     private string rainbowMode = "OFF";
     private string noteJumpSpeed = "1x";
-    private string oneLife = "OFF";
+    private string limitedEnergy = "OFF";
     private string obstacles = "ON";
     private string noteSize = "NORMAL";
     private string colliderSize = "NORMAL";
@@ -72,7 +72,7 @@ public class SongStatusScript : ModScript, ISynthRidersEvents
           Halo Notes - On
           Rainbow Mode - On
           Collider Size - On
-          One Life - On*/
+          Limited Energy - On*/
 
 
         //get information
@@ -94,13 +94,10 @@ public class SongStatusScript : ModScript, ISynthRidersEvents
 
         foreach (string modifier in trackData.activemodifiers)//modifiers
         {
+            log(modifier);
             if (modifier.Contains("No fail mode"))
             {
                 noFailMode = "ON";
-            }
-            else if (modifier.Contains("One Life"))
-            {
-                oneLife = "ON";
             }
             else if (modifier.Contains("Accuracity"))
             {
@@ -126,6 +123,30 @@ public class SongStatusScript : ModScript, ISynthRidersEvents
                     noteSize = "BIG";
                 }
             }
+            else if (modifier.Contains("Collider Size"))
+            {
+                string temp = modifier.Substring(modifier.IndexOf("-") + 2);
+                if (temp.Equals("Small"))
+                {
+                    colliderSize = "SMALL";
+                }
+                else if (temp.Equals("Medium"))
+                {
+                    colliderSize = "MEDIUM";
+                }
+            }
+            else if (modifier.Contains("Limted Energy"))
+            {
+                string temp = modifier.Substring(modifier.IndexOf("-") + 2);
+                if (temp.Contains("1"))
+                {
+                    limitedEnergy = "1 LIVE";
+                }
+                else if (temp.Contains("3 LIVES"))
+                {
+                    limitedEnergy = "3";
+                }
+            }
             else if (modifier.Contains("Halo Notes"))
             {
                 haloNotes = "ON";
@@ -133,10 +154,6 @@ public class SongStatusScript : ModScript, ISynthRidersEvents
             else if (modifier.Contains("Rainbow Mode"))
             {
                 rainbowMode = "ON";
-            }
-            else if (modifier.Contains("Collider Size"))
-            {
-                colliderSize = "ON";
             }
         }
 
@@ -232,7 +249,7 @@ public class SongStatusScript : ModScript, ISynthRidersEvents
         text = text.Replace("<accuracy>", accuracy);
         text = text.Replace("<rainbowMode>", rainbowMode);
         text = text.Replace("<noteJumpdSpeed>", noteJumpSpeed);
-        text = text.Replace("<oneLife>", oneLife);
+        text = text.Replace("<limitedEnergy>", limitedEnergy);
         text = text.Replace("<obstacles>", obstacles);
         text = text.Replace("<noteSize>", noteSize);
         text = text.Replace("<colliderSize>", colliderSize);
@@ -272,7 +289,7 @@ public class SongStatusScript : ModScript, ISynthRidersEvents
         accuracy = "NORMAL";
         rainbowMode = "OFF";
         noteJumpSpeed = "1x";
-        oneLife = "OFF";
+        limitedEnergy = "OFF";
         obstacles = "ON";
         noteSize = "NORMAL";
         colliderSize = "NORMAL";
