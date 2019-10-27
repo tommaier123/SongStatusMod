@@ -17,6 +17,10 @@ public class SongStatusScript : ModScript, ISynthRidersEvents
     private int n_misses = 0;
     private string misses = "0";
     private string mode = "";
+    private int n_multiplier = 1;
+    private string multiplier = "1";
+    private int n_score = 0;
+    private string score = "0";
 
     //modifiers
     private string accuracy = "NORMAL";
@@ -82,6 +86,11 @@ public class SongStatusScript : ModScript, ISynthRidersEvents
         difficulty = trackData.difficulty;
         misses = "0";
         n_misses = 0;
+        n_multiplier = 1;
+        multiplier = "1";
+        n_score = 0;
+        score = "0";
+
         mode = trackData.mode;
         if (trackData.isCustomSong)
         {
@@ -186,7 +195,11 @@ public class SongStatusScript : ModScript, ISynthRidersEvents
 
     public void OnPointScored(PointsData pointsData)
     {
-
+        n_multiplier = pointsData.currMultiplier;
+        multiplier = n_multiplier.ToString();
+        n_score += (int)(pointsData.points * pointsData.currMultiplier);
+        score = n_score.ToString();
+        WriteSongStatus();
     }
 
     public void OnSongFinished(SongFinishedData songFinishedData)
@@ -244,6 +257,8 @@ public class SongStatusScript : ModScript, ISynthRidersEvents
         text = text.Replace("<difficulty>", difficulty);
         text = text.Replace("<misses>", misses);
         text = text.Replace("<mode>", mode);
+        text = text.Replace("<multiplier>", multiplier);
+        text = text.Replace("<score>", score);
 
         //modifiers
         text = text.Replace("<accuracy>", accuracy);
@@ -284,6 +299,11 @@ public class SongStatusScript : ModScript, ISynthRidersEvents
         n_misses = 0;
         misses = "0";
         mode = "";
+        n_misses = 0;
+        n_multiplier = 1;
+        multiplier = "1";
+        n_score = 0;
+        score = "0";
 
         //modifiers
         accuracy = "NORMAL";
