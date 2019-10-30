@@ -13,6 +13,8 @@ Commands:
 <bpm>
 <difficulty>
 <misses>
+<score>
+<multiplier>
 <mode>
 <noFailMode>
 <limitedEnergy>
